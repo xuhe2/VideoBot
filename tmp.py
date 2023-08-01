@@ -1,11 +1,31 @@
 import time
 
+from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+
 from Login.zjooc import ZjoocLogin
 from WatchVideo import zjooc
 from ChooseVideo.zjooc import ZjoocCaptureList
+from Login import save_image_from_base64
 
 if __name__ == '__main__':
-    test_login = ZjoocLogin()
+    # web: Chrome = Chrome()
+    # web.get('https://www.zjooc.cn/')
+    # web.find_element(By.XPATH, '//*[@id="app"]/section/header/div/div[1]/div/div[2]/a').click()
+    #
+    # time.sleep(3)
+    # # 获取验证码图片的base64编码
+    # img_base64 = (web.find_element(By.XPATH,
+    #                                '/html/body/div[1]/div[2]/div[2]/div[3]/div[3]/img').get_attribute('src'))
+    # print(img_base64)
+    # # 保存验证码图片
+    # save_image_from_base64(img_base64, 'zjooc.png')
+    #
+    # input('按下回车键继续...')
+
+    # pack up
+    test_login = ZjoocLogin(headless=True)
     # # 获取登陆按钮
     # loginButton = test.web.find_element(By.XPATH, '//*[@id="app"]/section/header/div/div[1]/div/div[2]/a')
     # # 点击登陆按钮

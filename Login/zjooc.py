@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from Login import captcha_solver
-from Login import screenshot
+from Login import save_image_from_base64
 
 
 class ZjoocLogin:
@@ -20,6 +20,7 @@ class ZjoocLogin:
             self.web = Chrome(options=chrome_options)  # 设置引擎为Chrome，在后台默默运行
         else:
             self.web = Chrome()  # 设置引擎为Chrome，在后台默默运行
+        # !注意:一定要设置窗口大小,否则按钮无法按下!
         self.web.set_window_size(1920, 1080)  # 设置浏览器窗口大小
 
         self.url: str = 'https://www.zjooc.cn/'
@@ -41,11 +42,11 @@ class ZjoocLogin:
 
     # 输入账户信息
     def input_account_info(self, username: str, password: str) -> bool:
-        # 截图
-        self.web.save_screenshot('zjooc.png')
-        # 截取验证码图片
-        # 从1450,360到1540,415截取图像
-        screenshot('zjooc.png', 1450, 360, 1540, 415)
+        # 获取验证码图片的base64编码
+        img_base64 = (self.web.find_element(By.XPATH,
+                                            '/html/body/div[1]/div[2]/div[2]/div[3]/div[3]/img').get_attribute('src'))
+        # 保存验证码图片
+        save_image_from_base64(img_base64, 'zjooc.png')
 
         try:
             # 找到账号输入框,`id="login_name"`
@@ -120,6 +121,8 @@ class ZjoocLogin:
                 continue
 
             try:
+                # 等待3秒
+                time.sleep(3)
                 self.input_account_info(username, password)  # 输入账户信息
 
                 # 找到登陆按钮,`/html/body/div[1]/div[2]/div[2]/div[3]/button`,点击登陆

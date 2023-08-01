@@ -1,5 +1,21 @@
 from ddddocr import DdddOcr
 from PIL import Image
+import base64
+
+
+def save_image_from_base64(base64_string: str, img_path: str) -> bool:
+    try:
+        # 解码 data: URL 中的图片数据
+        image_data = base64_string.split(",")[1]
+        image_data = base64.b64decode(image_data)
+        # 将图片数据写入文件
+        with open(img_path, 'wb') as f:
+            f.write(image_data)
+
+        return True
+    except Exception as e:
+        print(f"保存图片失败：{e}")
+        return False
 
 
 def captcha_solver(img_path: str, captcha_len: int = None) -> str:

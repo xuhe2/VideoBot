@@ -11,27 +11,25 @@ from Login import save_image_from_base64
 
 
 class ZjoocLogin:
-    def __init__(self, headless: bool = False):
+    def __init__(self, headless: bool = False, mute_audio: bool = False, no_log: bool = False):
         # 使用headless无界面浏览器模式
         chrome_options: Options = Options()  # 实例化Option对象
-        chrome_options.add_argument('--headless')  # 把Chrome浏览器设置为静默模式
+        if headless:  # 设置headless模式
+            chrome_options.add_argument('--headless')  # 把Chrome浏览器设置为静默模式
+        if mute_audio:  # 设置静音模式
+            chrome_options.add_argument('--mute-audio')
+        if no_log:  # 设置日志不打印
+            chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-        if headless:
-            self.web = Chrome(options=chrome_options)  # 设置引擎为Chrome，在后台默默运行
-        else:
-            self.web = Chrome()  # 设置引擎为Chrome，在后台默默运行
+        self.web = Chrome(options=chrome_options)  # 设置引擎为Chrome，在后台默默运行
         # !注意:一定要设置窗口大小,否则按钮无法按下!
         self.web.set_window_size(1920, 1080)  # 设置浏览器窗口大小
 
         self.url: str = 'https://www.zjooc.cn/'
         self.web.get(self.url)  # 访问网址
 
-    # 析构函数
-    def __del__(self):
-        self.web.quit()
-
     def check_captcha(self) -> bool:
-        time.sleep(2)
+        time.sleep(5)
         # 如果不存在登录按钮就是登陆成功
         # 登录按钮的`class = "dologin"`
         try:
@@ -109,7 +107,7 @@ class ZjoocLogin:
         except:
             return False
 
-    def run(self, username: str, password: str, max_login_num: int = 100) -> bool:
+    def run(self, username: str, password: str, max_login_num: int = 100) -> Chrome:
         flag = False  # 是否登陆成功
         index: int = 0  # 登陆次数
 
@@ -132,7 +130,7 @@ class ZjoocLogin:
                 if self.check_captcha():
                     flag = True
                     print('username:', username, 'password:', password, '第', index, '次登陆成功')
-                    return True
+                    return self.web
 
             except Exception as e:
                 pass
@@ -140,7 +138,7 @@ class ZjoocLogin:
             self.back_to_home_page()  # 回到初始界面
             print('username:', username, 'password:', password, '第', index, '次登陆失败')  # 登陆失败
 
-        return False
+        raise Exception('登陆失败')
 
 
 if __name__ == '__main__':

@@ -21,6 +21,20 @@ class ZjoocLogin:
         if no_log:  # 设置日志不打印
             chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
+        """
+        在linux上运行的时候，需要一些额外的配置
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('start-maximized')
+        chrome_options.add_argument("--disable-extensions")
+        chrome_options.add_argument('--disable-browser-side-navigation')
+        chrome_options.add_argument('enable-automation')
+        chrome_options.add_argument('--disable-infobars')
+        chrome_options.add_argument('enable-features=NetworkServiceInProcess')
+        """
+
         self.web = Chrome(options=chrome_options)  # 设置引擎为Chrome，在后台默默运行
         # !注意:一定要设置窗口大小,否则按钮无法按下!
         self.web.set_window_size(1920, 1080)  # 设置浏览器窗口大小

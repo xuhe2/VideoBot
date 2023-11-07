@@ -12,7 +12,7 @@ class Zjooc:
     def run(self) -> bool:
         # 登录
         try:
-            web = ZjoocLogin(headless=True, mute_audio=True, no_log=True).run(self.username, self.password)
+            web = ZjoocLogin(headless=False, mute_audio=True, no_log=True).run(self.username, self.password)
         except Exception as e:
             print(e)
             return False

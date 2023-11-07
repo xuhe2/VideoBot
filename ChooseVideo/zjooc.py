@@ -8,19 +8,20 @@ from WatchVideo.zjooc import ZjoocWatchVideo
 
 DEBUG = False
 
+SLEEP_TIME = 5
 
 class ZjoocCaptureList:
     def __init__(self, web: Chrome):
         self.web = web  # 浏览器
 
         if DEBUG:
-            time.sleep(2)
+            time.sleep(SLEEP_TIME)
             # 按下`//*[@id="app"]/div/section/main/div/div[2]/div/div[3]/div[2]/div/div[2]/div[3]/div[2]/button[1]/span`
             # 时,视频列表会出现
             web.find_element(By.XPATH,
                              '//*[@id="app"]/div/section/main/div/div[2]/div/div[3]/div[2]/div/div[2]/div[3]/div[2]/button[1]/span') \
                 .click()
-            time.sleep(1)
+            time.sleep(SLEEP_TIME)
             web.find_element(By.XPATH, '//*[@id="app"]/div/section/main/div/div/div[1]/ul/li[3]/div') \
                 .click()
 
@@ -29,7 +30,7 @@ class ZjoocCaptureList:
         # 等待视频列表出现
         try:
             if DEBUG:
-                time.sleep(2)
+                time.sleep(SLEEP_TIME)
 
             self.video_list = self.web.find_elements(By.XPATH,
                                                      '//*[@id="app"]/div/section/main/div/div/div[2]/div/div[2]/div[1]/div/div/div/div/div/div/div/span')
@@ -41,7 +42,7 @@ class ZjoocCaptureList:
     @staticmethod
     def check_video_status(element: WebElement) -> bool:
         # 检查是否已经看过
-        if element.find_element(By.XPATH, './i').get_attribute('class') == 'complete iconfont icon-shipin':
+        if 'complete' in element.find_element(By.XPATH, './i').get_attribute('class'):
             return True
         else:
             return False
@@ -100,11 +101,11 @@ class ZjoocChooseVideo:
 
         # 按钮的内容是`进入学习`
         class_element.find_element(By.XPATH, './/button[.//span[text()="进入学习"]]').click()
-        time.sleep(2)  # 等待页面加载
+        time.sleep(SLEEP_TIME)  # 等待页面加载
         # 再按下`//*[@id="app"]/div/section/main/div/div/div[1]/ul/li[3]/div/span`
         self.web.find_element(By.XPATH, '//*[@id="app"]/div/section/main/div/div/div[1]/ul/li[3]/div/span') \
             .click()
-        time.sleep(2)  # 等待页面加载
+        time.sleep(SLEEP_TIME)  # 等待页面加载
 
     # 打印课程列表
     def print_class_list(self):
@@ -119,16 +120,16 @@ class ZjoocChooseVideo:
     def return_to_class_page(self):
         self.web.get(self.class_page)
         # 等待页面加载
-        time.sleep(2)
+        time.sleep(SLEEP_TIME)
         # 调整为每面显示20个课程
         # 按下`//*[@id="app"]/div/section/main/div/div[2]/div/div[4]/div/span[2]/div/div/input`
         self.web.find_element(By.XPATH,
                               '//*[@id="app"]/div/section/main/div/div[2]/div/div[4]/div/span[2]/div/div/input') \
             .click()
-        time.sleep(2)
+        time.sleep(SLEEP_TIME)
         # 按下`/html/body/div[2]/div[1]/div[1]/ul/li[4]`
         self.web.find_element(By.XPATH, '/html/body/div[2]/div[1]/div[1]/ul/li[4]').click()
-        time.sleep(2)
+        time.sleep(SLEEP_TIME)
 
     def run(self):
         self.print_class_list()  # 打印课程列表

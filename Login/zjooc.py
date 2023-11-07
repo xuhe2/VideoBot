@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from Login import captcha_solver
 from Login import save_image_from_base64
 
+SLEEP_TIME = 5
 
 class ZjoocLogin:
     def __init__(self, headless: bool = False, mute_audio: bool = False, no_log: bool = False):
@@ -43,7 +44,7 @@ class ZjoocLogin:
         self.web.get(self.url)  # 访问网址
 
     def check_captcha(self) -> bool:
-        time.sleep(5)
+        time.sleep(SLEEP_TIME)
         # 如果不存在登录按钮就是登陆成功
         # 登录按钮的`class = "dologin"`
         try:
@@ -134,7 +135,7 @@ class ZjoocLogin:
 
             try:
                 # 等待3秒
-                time.sleep(3)
+                time.sleep(SLEEP_TIME)
                 self.input_account_info(username, password)  # 输入账户信息
 
                 # 找到登陆按钮,`/html/body/div[1]/div[2]/div[2]/div[3]/button`,点击登陆
@@ -170,7 +171,6 @@ if __name__ == '__main__':
     # username = input('请输入账号:')
     # password = input('请输入密码:')
 
-    test.login('18968683833', '200310230015xh')
 
     # 在当前界面停下
     input('按下回车键退出...')

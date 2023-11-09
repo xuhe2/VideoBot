@@ -8,7 +8,8 @@ from WatchVideo.zjooc import ZjoocWatchVideo
 
 DEBUG = False
 
-SLEEP_TIME = 5
+SLEEP_TIME = 3
+
 
 class ZjoocCaptureList:
     def __init__(self, web: Chrome):
@@ -157,14 +158,14 @@ class ZjoocChooseVideo:
             print('-' * 50)
             print('正在观看课程:[', ZjoocChooseVideo.get_class_name(self.class_list[self.queue[0]]), ']...')
 
-            self.watch_class(self.class_list[self.queue.pop(0)])  # 播放课程
+            self.watch(self.class_list[self.queue.pop(0)])  # 播放课程
 
             print('!!!课程观看完毕!!!')
             print('-' * 50)
 
             self.get_class_list()  # 更新课程列表
 
-    def watch_class(self, class_element: WebElement):
+    def watch(self, class_element: WebElement):
         # 前往课程页面
         self.go_to_capture_page(class_element)
         # 获取视频列表

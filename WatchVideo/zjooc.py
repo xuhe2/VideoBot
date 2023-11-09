@@ -7,6 +7,16 @@ from selenium.webdriver.support import expected_conditions as EC
 
 DEBUG = False
 
+SLEEP_TIME = 3
+
+
+# 一个从秒表示的时间转换为分钟等表示的时间的修饰器
+def translate_time(second: int) -> str:
+    hour: int = second // 3600
+    minute: int = (second - 3600 * hour) // 60
+    second: int = second % 60
+    return f"{hour}h:{minute}m:{second}s"
+
 
 class ZjoocWatchVideo:
     def __init__(self, web: Chrome):
@@ -17,7 +27,7 @@ class ZjoocWatchVideo:
         self.video_btn_xpath: str = '//*[@id="video-show"]/div/div[10]'
 
         try:
-            time.sleep(2)
+            time.sleep(SLEEP_TIME)
             # 等待按钮出现
             WebDriverWait(self.web, 10).until(
                 EC.presence_of_element_located((By.XPATH, self.video_btn_xpath))
@@ -31,7 +41,7 @@ class ZjoocWatchVideo:
     # 获取视频时长
     def get_video_time(self) -> int:
         # 等待时长显示
-        time.sleep(2)
+        time.sleep(SLEEP_TIME)
         # 显示格式是`00:00/00:00`,第一个`00:00`是当前播放时间,第二个`00:00`是视频总时长
         # 获取时长
         time_str = self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[2]/div[8]').text
@@ -67,26 +77,27 @@ class ZjoocWatchVideo:
             return_btn = self.web.find_element(By.XPATH, '//*[@id="app"]/div/section/section/header/span')
             return_btn.click()
             # 等待返回
-            time.sleep(2)
+            time.sleep(SLEEP_TIME)
         except:
             print('找不到返回按钮')
             raise Exception('找不到返回按钮')
 
     def run(self) -> Chrome:
         # 等待视频可以播放
-        time.sleep(5)
+        time.sleep(SLEEP_TIME)
         # 开始看视频
         self.video_btn.click()
         # 获取视频时长
         try:
             self.video_time = self.get_video_time()
-            print('video time:', self.video_time)
+
+            print('video time:', translate_time(self.video_time))
         except Exception as e:
             print('watch video error')
             print(e)
             raise Exception('观看视频出错')
 
-            # 等待视频播放结束
+        # 等待视频播放结束
         time.sleep(self.video_time + 5)
         # 返回章节列表界面
         self.return_to_chapter_list_page()

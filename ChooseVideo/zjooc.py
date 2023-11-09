@@ -1,10 +1,12 @@
 import time
+import datetime
 
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 from WatchVideo.zjooc import ZjoocWatchVideo
+from WatchPPT.zjooc import ZjoocWatchPPT
 
 DEBUG = False
 
@@ -177,10 +179,20 @@ class ZjoocChooseVideo:
             if len(capture_list) == 0:  # 没有视频了
                 break
 
+            # 显示现在的时间
+            print(f'now time is: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+
             item = capture_list[0]  # 选择第一个视频
             print('capture name: [', item.text, ']')
             # 点击
             item.click()
-            test_watch_video = ZjoocWatchVideo(self.web)  # DEBUG
-            self.web = test_watch_video.run()
-            print('the video that unwatched: ', len(capture_list) - 1)
+            # 等待URL被完全加载(在观看PPT的时候用到)
+            time.sleep(SLEEP_TIME)
+            # 如果是视频任务
+            task = None
+            if 'icon-shipin' in item.find_element(By.XPATH, './i').get_attribute('class'):
+                task = ZjoocWatchVideo(web=self.web)
+            elif 'icon-iconset0387' in item.find_element(By.XPATH, './i').get_attribute('class'):
+                task = ZjoocWatchPPT(web=self.web)
+            self.web = task.run()
+            print('未完成的项目数量: ', len(capture_list) - 1)

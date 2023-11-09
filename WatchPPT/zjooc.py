@@ -12,7 +12,11 @@ class ZjoocWatchPPT:
     def __init__(self, web: Chrome):
         self.web: Chrome = web  # 存储当前的界面
 
-        self.PPT_button_xpath = '//*[@id="pane-8a2282dc8aa77f16018ad091a7931466"]/div/div/div[2]/button/span'
+        # 获取URL
+        url: str = self.web.current_url
+        # 使用URL最后一段
+        url_last_part: str = url.split('/')[-1]
+        self.PPT_button_xpath = f'//*[@id="pane-{url_last_part}"]/div/div/div[2]/button/span'
 
     def return_to_chapter_list_page(self):
         # 返回按钮的XPATH为`//*[@id="app"]/div/section/section/header/span`

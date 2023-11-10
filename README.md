@@ -38,7 +38,7 @@ docker search xuhe114514/video_bot
 2. 拉取
 
 ```shell
-docker pull xuhe114514/video_bot
+docker pull xuhe114514/video_bot:1.1
 ```
 
 

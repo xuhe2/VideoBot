@@ -184,15 +184,20 @@ class ZjoocChooseVideo:
 
             item = capture_list[0]  # 选择第一个视频
             print('capture name: [', item.text, ']')
+            # 检查播放任务的类型
+            task_type = None
+            if 'icon-shipin' in item.find_element(By.XPATH, './i').get_attribute('class'):
+                task_type = 'Video'
+            elif 'icon-iconset0387' in item.find_element(By.XPATH, './i').get_attribute('class'):
+                task_type = 'PPT'
             # 点击
             item.click()
             # 等待URL被完全加载(在观看PPT的时候用到)
             time.sleep(SLEEP_TIME)
-            # 如果是视频任务
-            task = None
-            if 'icon-shipin' in item.find_element(By.XPATH, './i').get_attribute('class'):
+            # task = ZjoocWatchVideo(web=self.web)
+            if task_type == 'Video':
                 task = ZjoocWatchVideo(web=self.web)
-            elif 'icon-iconset0387' in item.find_element(By.XPATH, './i').get_attribute('class'):
+            elif task_type == 'PPT':
                 task = ZjoocWatchPPT(web=self.web)
             self.web = task.run()
             print('未完成的项目数量: ', len(capture_list) - 1)

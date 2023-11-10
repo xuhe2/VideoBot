@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 DEBUG = False
 
-SLEEP_TIME = 3
+SLEEP_TIME = 5
 
 
 # 一个从秒表示的时间转换为分钟等表示的时间的修饰器
@@ -41,9 +41,10 @@ class ZjoocWatchVideo:
     # 获取视频时长
     def get_video_time(self) -> int:
         # 等待时长显示
-        time.sleep(SLEEP_TIME)
+        time.sleep(2)
         # 显示格式是`00:00/00:00`,第一个`00:00`是当前播放时间,第二个`00:00`是视频总时长
-        # 获取时长
+
+         # 获取时长
         time_str = self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[2]/div[8]').text
         # 分割字符串
         time_list = time_str.split('/')

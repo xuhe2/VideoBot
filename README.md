@@ -27,6 +27,30 @@ pip install -r requirements.txt
 
 > 作者是个大FW,只会打成简单的docker镜像,不是docker file
 
+1. 你可以找到我的镜像在docker hub上
+
+```shell
+docker search xuhe114514/video_bot
+```
+
+
+
+2. 拉取
+
+```shell
+docker pull xuhe114514/video_bot
+```
+
+
+
+3. 运行
+
+```shell
+docker run -it 646b49740891 /bin/bash
+```
+
+
+
 
 
 # 修改日志

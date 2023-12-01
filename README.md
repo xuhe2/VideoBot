@@ -38,7 +38,7 @@ docker search xuhe114514/video_bot
 2. 拉取
 
 ```shell
-docker pull xuhe114514/video_bot:1.1
+docker pull xuhe114514/video_bot:1.2
 ```
 
 
@@ -46,7 +46,7 @@ docker pull xuhe114514/video_bot:1.1
 3. 进入容器
 
 ```shell
-docker run -it 646b49740891 /bin/bash
+sudo docker run -it d4e9df7b7866 /bin/bash
 ```
 
 

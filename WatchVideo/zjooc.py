@@ -9,6 +9,8 @@ DEBUG = False
 
 SLEEP_TIME = 5
 
+VIDEO_SPEED = 1  # 设置视频播放速度
+
 
 # 一个从秒表示的时间转换为分钟等表示的时间的修饰器
 def translate_time(second: int) -> str:
@@ -44,7 +46,7 @@ class ZjoocWatchVideo:
         time.sleep(2)
         # 显示格式是`00:00/00:00`,第一个`00:00`是当前播放时间,第二个`00:00`是视频总时长
 
-         # 获取时长
+        # 获取时长
         time_str = self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[2]/div[8]').text
         # 分割字符串
         time_list = time_str.split('/')
@@ -83,14 +85,41 @@ class ZjoocWatchVideo:
             print('找不到返回按钮')
             raise Exception('找不到返回按钮')
 
+    def set_video_speed(self):
+        time.sleep(2)
+        # 找到时间选择
+        video_speed_btn = self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[2]/div[14]')
+        # 点开选项
+        video_speed_btn.click()
+        time.sleep(1)
+        # 0.5 speed
+        if VIDEO_SPEED == 0.5:
+            self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[8]/p[6]').click()
+        # 1.25 speed
+        if VIDEO_SPEED == 1.25:
+            self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[8]/p[4]').click()
+        # 1.5 speed
+        if VIDEO_SPEED == 1.5:
+            self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[8]/p[3]').click()
+        #  2 speed
+        if VIDEO_SPEED == 2:
+            self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[8]/p[2]').click()
+        # 4 speed
+        if VIDEO_SPEED == 4:
+            self.web.find_element(By.XPATH, '//*[@id="video-show"]/div/div[8]/p[1]').click()
+        time.sleep(1)
+
     def run(self) -> Chrome:
         # 等待视频可以播放
         time.sleep(SLEEP_TIME)
+
         # 开始看视频
         self.video_btn.click()
+        # 设置视频速度
+        self.set_video_speed()
         # 获取视频时长
         try:
-            self.video_time = self.get_video_time()
+            self.video_time = int(self.get_video_time() / VIDEO_SPEED)
 
             print('video time:', translate_time(self.video_time))
         except Exception as e:

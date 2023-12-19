@@ -3,7 +3,7 @@
 
 可以使用docker部署
 
-* 没有设置倍速,可以添加这个功能(但是我懒)
+可以使用dockerfile部署
 
 
 
@@ -23,9 +23,7 @@ pip install -r requirements.txt
 
 
 
-# 使用docker部署
-
-> 作者是个大FW,只会打成简单的docker镜像,不是docker file
+# 使用docker部署(不再更新,请使用dockerfile部署)
 
 1. 你可以找到我的镜像在docker hub上
 
@@ -64,6 +62,24 @@ sudo docker run -it d4e9df7b7866 /bin/bash
 5. 输入**账号,密码**,选择你想要的视频速度(如果选择错误,会默认1倍速),然后等待登陆,选择要观看的课程
 
 > 可以选择多个课程,按选择顺序观看(但是,因为BUG,一般无法正常连续播放)
+
+
+
+# 使用Dockerfile部署
+
+1. 构建镜像
+
+```bash
+docker build -t video-bot .
+```
+
+2. 运行镜像
+
+```bash
+sudo docker run --rm -it video-bot
+```
+
+> `--rm`代表运行完成之后就删除
 
 
 
